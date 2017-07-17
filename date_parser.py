@@ -3,7 +3,7 @@
 import re
 from datetime import datetime
 import dateutil.parser
-from .settings import CONSTANTS as CONSTS
+from settings import CONSTANTS as CONSTS
 
 
 class DateFromString:
@@ -47,14 +47,11 @@ class DateFromString:
             if len(day_from_string[0]) == 1:
                 # Add 0 before day digit if it's a single digit
                 self.date.append('0'.join(day_from_string[0]))
+            else:
+                self.date.append(day_from_string[0])
+
         except IndexError:
             pass
-
-        else:
-            try:
-                self.date.append(day_from_string[0])
-            except IndexError:
-                pass
 
     def _get_month(self):
         """

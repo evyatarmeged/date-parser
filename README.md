@@ -28,6 +28,9 @@ March 01, 2017. Originally posted
 on February 27, 2017."
 Parsed date:  2017-03-01 00:00:00
 
+Date tag: "different day format 17th july 2017"
+Parsed Date: 2017-07-17 00:00:00
+
 Date tag: "This is a 27/05/1920 date string"
 Parsed Date: 1920-05-27 00:00:00
 
