@@ -8,35 +8,35 @@ Originally developed for my RSS project, I needed a date parser because each blo
 These examples contain the string scraped from a date tag in an arbitrarty URL and the date returned after the call to DateParser(date).parse_date() function with that string.
 
 
-Date tag:  "09 October 2016"
+Date tag:  "09 October 2016"<br>
 Parsed date:  2016-10-09 00:00:00
 
-Date tag: "Mar 29, 2017 · 3 minute read"
+Date tag: "Mar 29, 2017 · 3 minute read"<br>
 Parsed date:  2017-03-29 00:00:00
 
-Date tag: "Jan 1, 2017 · 2 minute read"
+Date tag: "Jan 1, 2017 · 2 minute read"<br>
 Parsed date: "2017-01-01 00:00:00
 
 Date tag: Posted by `Author` on
-May 14, 2017."
-Parsed date:  2017-05-14 00:00:00
+May 14, 2017."<br>
+Parsed date:  2017-05-14 00:00:00<br>
 
-If 2 dates are present within a string, uses the first one by order of appearence:
+If 2 dates are present within a string, uses the first one by order of appearence:<br>
 
 Date tag: "Post updated by `Author` on 
 March 01, 2017. Originally posted 
-on February 27, 2017."
+on February 27, 2017."<br>
 Parsed date:  2017-03-01 00:00:00
 
-Date tag: "different day format 17th july 2017"
+Date tag: "different day format 17th july 2017"<br>
 Parsed Date: 2017-07-17 00:00:00
 
-Date tag: "This is a 27/05/1920 date string"
+Date tag: "This is a 27/05/1920 date string"<br>
 Parsed Date: 1920-05-27 00:00:00
 
-Date tag: "This is another string containing a date09.12.1990with no white space"
+Date tag: "This is another string containing a date09.12.1990with no white space"<br>
 Parsed Date: 1990-09-12 00:00:00
 
 # Note
-DateParser utilizes dateutil library. If passed a date string the like the last example above, DateParser isolates the date only part and tries to let dateutil parse it. 
+DateParser utilizes dateutil library. If passed a date string like the last example above, DateParser isolates the date only part and tries to let dateutil parse it. 
 dateutil defaults to DD/MM/YYYY or YYYY/MM/DD so the middle digits will always be considered month, UNLESS middle digits > 12, which they will then be considered as days.
