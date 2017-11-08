@@ -5,7 +5,7 @@ A small and basic date parser for different date formats, parses to datetime eli
 Originally developed for my RSS project, I needed a date parser because each blog / site had different date formats, so I wrote this in order to be able to sort by date, and for continuity's sake.
 
 # Examples
-These examples contain the string scraped from a date tag in an arbitrarty URL and the date returned after the call to DateParser(date).parse_date() function with that string.
+These examples contain the string scraped from a date tag in an arbitrarty URL and the date returned after the call to a DateParser's instance parse_date(date_string) function.
 
 
 Date tag:  "09 October 2016"<br>
