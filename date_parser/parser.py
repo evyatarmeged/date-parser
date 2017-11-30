@@ -89,8 +89,6 @@ class DateParser(DateFromString):
                 timestamp = dateutil.parser.parse(pattern_date[0])
                 if timestamp:
                     return timestamp
-                else:
-                    pass
             except (ValueError, IndexError):
                 pass
 
@@ -115,8 +113,6 @@ class DateParser(DateFromString):
                     date = self._parse_by_separator(date_string)
                     if date:
                         return date
-                    else:
-                        continue
                 except ValueError:
                     continue
 
