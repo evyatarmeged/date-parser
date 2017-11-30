@@ -1,7 +1,4 @@
 # ---- Settings file ----
-from datetime import datetime
-
-
 class Constants:
     def __init__(self):
         self.forward_slash_regex = r'\d{1,2}\/\d{1,2}\/\d{4}|\d{4}\/\d{1,2}\/\d{1,2}'
@@ -21,5 +18,3 @@ class Constants:
             '11': 'nov',
             '12': 'dec'
             }
-
-CONSTANTS = Constants()

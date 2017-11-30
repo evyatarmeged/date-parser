@@ -3,7 +3,7 @@
 import re
 from datetime import datetime
 import dateutil.parser
-from settings import CONSTANTS as CONSTS
+from settings import Constants
 
 
 class DateFromString:
@@ -13,11 +13,13 @@ class DateFromString:
     Appends parsed data to list 'date'.
     If 2 dates are present within a string, will use the first one by order of appearence.
     """
+    CONSTANTS = Constants()
+
     def __init__(self):
         self.date = []
         self.year = re.compile(r'\d{4}')  # Regex to match year digits
         self.day = re.compile(r'\b\d{1,2}\b')  # Regex to match day digits surrounded by whitespace
-        self.months = CONSTS.months  # A dictionary of key(month number) and value (month 3 chars)
+        self.months = self.CONSTANTS.months  # A dictionary of key(month number) and value (month 3 chars)
         self.separators = ('/', '-', '.')
 
     def _get_year(self, date_string):
@@ -59,7 +61,7 @@ class DateFromString:
         Appends to self.date.
         """
         for month in date_string.lower().split():
-            for month_key, month_value in CONSTS.months.items():
+            for month_key, month_value in self.CONSTANTS.months.items():
                 if month_value in month and not len(self.date) > 1:
                     self.date.append(month_key)
 
@@ -67,21 +69,20 @@ class DateFromString:
 class DateParser(DateFromString):
     def __init__(self):
         super().__init__()
+        self.pattern_list = [
+            self.CONSTANTS.forward_slash_regex, self.CONSTANTS.dot_regex, self.CONSTANTS.hyphen_regex]
     """
     Inherits from DateFromString, tries to parse date from passed string using
     dateutil module / super class' methods.
     """
-    @staticmethod
-    def _parse_by_separator(date_string):
+
+    def _parse_by_separator(self, date_string):
         """
         Tries to parse each element of date_string split by separator
         using dateutil if separator occurrence > 2 in date_string.
         :return: Datetime object
         """
-        # Using pattern list because I couldn't use string formatting with regex strings
-        pattern_list = [CONSTS.forward_slash_regex, CONSTS.dot_regex, CONSTS.hyphen_regex]
-
-        for pattern in pattern_list:
+        for pattern in self.pattern_list:
             compiled_pattern = re.compile(pattern)
             pattern_date = re.findall(compiled_pattern, date_string)
             try:
@@ -103,30 +104,29 @@ class DateParser(DateFromString):
         """
         date_string = date_string.replace('\n', ' ').replace('\r', '')
         try:
-            timestamp = dateutil.parser.parse(date_string)
-            return timestamp
+            date = dateutil.parser.parse(date_string)
+            return date
         except ValueError:
             pass
 
         for separator in self.separators:
             if date_string.count(separator) > 1:
                 try:
-                    timestamp = DateParser._parse_by_separator(date_string)
-                    if timestamp:
-                        return timestamp
+                    date = self._parse_by_separator(date_string)
+                    if date:
+                        return date
                     else:
                         continue
                 except ValueError:
                     continue
 
-        DateFromString._get_year(self, date_string)
-        DateFromString._get_month(self, date_string)
-        DateFromString._get_day(self, date_string)
+        self._get_year(date_string)
+        self._get_month(date_string)
+        self._get_day(date_string)
         try:
             if self.date and len(self.date[2]) > 2:
                 return dateutil.parser.parse(' '.join(self.date))
             else:
                 return datetime(int(self.date[0]), int(self.date[1]), int(self.date[2]))
         except IndexError:
-            print('No date found')
-            return None
+            return 'Could not parse date from {}'.format(date_string)
