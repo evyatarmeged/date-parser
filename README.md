@@ -1,42 +1,31 @@
 # Date-parser
 A small and basic date parser for different date formats, parses to datetime eligble format with the kind help of the dateutil library.
 
-# Description
-Originally developed for my RSS project, I needed a date parser because each blog / site had different date formats, so I wrote this in order to be able to sort by date, and for continuity's sake.
+#### Installation
+`pip3 install date-parser`
 
-# Examples
-These examples contain the string scraped from a date tag in an arbitrarty URL and the date returned after the call to a DateParser's instance parse_date(date_string) function.
+#### Usage
 
+```
+from date_parser.parser import DateParser
+dp = DateParser()
+```
 
-Date tag:  "09 October 2016"<br>
-Parsed date:  2016-10-09 00:00:00
+```
+dp.parse_date('September 24th 1929')
+datetime.datetime(1929, 9, 24, 0, 0)
+```
 
-Date tag: "Mar 29, 2017 · 3 minute read"<br>
-Parsed date:  2017-03-29 00:00:00
+```
+dp.parse_date('01-01-2017')
+datetime.datetime(2017, 1, 1, 0, 0)
+```
+```
+print(dp.parse_date('Jan 14th 1999'))
+1999-01-14 00:00:00
+```
+```
+print(dp.parse_date('NoWhiteSpaceDate19.11.1984'))
+1984-11-19 00:00:00
+```
 
-Date tag: "Jan 1, 2017 · 2 minute read"<br>
-Parsed date: "2017-01-01 00:00:00
-
-Date tag: Posted by `Author` on
-May 14, 2017."<br>
-Parsed date:  2017-05-14 00:00:00<br>
-
-If 2 dates are present within a string, uses the first one by order of appearence:<br>
-
-Date tag: "Post updated by `Author` on 
-March 01, 2017. Originally posted 
-on February 27, 2017."<br>
-Parsed date:  2017-03-01 00:00:00
-
-Date tag: "different day format 17th july 2017"<br>
-Parsed Date: 2017-07-17 00:00:00
-
-Date tag: "This is a 27/05/1920 date string"<br>
-Parsed Date: 1920-05-27 00:00:00
-
-Date tag: "This is another string containing a date09.12.1990with no white space"<br>
-Parsed Date: 1990-09-12 00:00:00
-
-# Note
-DateParser utilizes dateutil library. If passed a date string like the last example above, DateParser isolates the date only part and tries to let dateutil parse it. 
-dateutil defaults to DD/MM/YYYY or YYYY/MM/DD so the middle digits will always be considered month, UNLESS middle digits > 12, which they will then be considered as days.

@@ -1,10 +1,8 @@
 # pylint: disable=import-error
 
 import re
-from datetime import datetime
-
 import dateutil.parser
-
+from datetime import datetime
 from date_parser.settings import Constants
 
 
