@@ -9,5 +9,5 @@ setup(
   url='https://github.com/evyatarmeged/date-parser',  # use the URL to the github repo
   download_url='https://github.com/peterldowns/mypackage/archive/0.1.tar.gz',  # I'll explain this in a second
   keywords=['testing', 'logging', 'example'],  # arbitrary keywords
-  classifiers=[],
+  classifiers=[], requires=['python-dateutil']
 )

@@ -2,8 +2,10 @@
 
 import re
 from datetime import datetime
+
 import dateutil.parser
-from settings import Constants
+
+from date_parser.settings import Constants
 
 
 class DateFromString:
@@ -13,22 +15,22 @@ class DateFromString:
     Appends parsed data to list 'date'.
     If 2 dates are present within a string, will use the first one by order of appearence.
     """
-    CONSTANTS = Constants()
+    _CONSTANTS = Constants()
 
     def __init__(self):
-        self.date = []
-        self.year = re.compile(r'\d{4}')  # Regex to match year digits
-        self.day = re.compile(r'\b\d{1,2}\b')  # Regex to match day digits surrounded by whitespace
-        self.months = self.CONSTANTS.months  # A dictionary of key(month number) and value (month 3 chars)
-        self.separators = ('/', '-', '.')
+        self._date = []
+        self._year = re.compile(r'\d{4}')  # Regex to match year digits
+        self._day = re.compile(r'\b\d{1,2}\b')  # Regex to match day digits surrounded by whitespace
+        self._months = self._CONSTANTS.months  # A dictionary of key(month number) and value (month 3 chars)
+        self._separators = ('/', '-', '.')
 
     def _get_year(self, date_string):
         """
         Matches 4 digit strings and appends first one to self.date
         """
-        year_from_string = re.findall(self.year, date_string)
+        year_from_string = re.findall(self._year, date_string)
         try:
-            self.date.append(year_from_string[0])
+            self._date.append(year_from_string[0])
         except IndexError:
             pass
 
@@ -38,18 +40,18 @@ class DateFromString:
         If an empty list is returned, changes regex to match 1 or 2 digits
         without whitespace lookahead. Appends to self.date.
         """
-        day_from_string = re.findall(self.day, date_string)
+        day_from_string = re.findall(self._day, date_string)
         if not day_from_string:
-            self.day = re.compile(r'\b\d{1,2}\D{2}')
+            self._day = re.compile(r'\b\d{1,2}\D{2}')
         # If self.day matches None, change regex to match day digit with followed by 2 chars
         # e.g: (1st, 2nd, 14th, 29th)
-            day_from_string = re.findall(self.day, date_string)
+            day_from_string = re.findall(self._day, date_string)
         try:
             if len(day_from_string[0]) == 1:
                 # Add 0 before day digit if it's a single digit
-                self.date.append('0'.join(day_from_string[0]))
+                self._date.append('0'.join(day_from_string[0]))
             else:
-                self.date.append(day_from_string[0])
+                self._date.append(day_from_string[0])
 
         except IndexError:
             pass
@@ -61,16 +63,16 @@ class DateFromString:
         Appends to self.date.
         """
         for month in date_string.lower().split():
-            for month_key, month_value in self.CONSTANTS.months.items():
-                if month_value in month and not len(self.date) > 1:
-                    self.date.append(month_key)
+            for month_key, month_value in self._CONSTANTS.months.items():
+                if month_value in month and not len(self._date) > 1:
+                    self._date.append(month_key)
 
 
 class DateParser(DateFromString):
     def __init__(self):
         super().__init__()
-        self.pattern_list = [
-            self.CONSTANTS.forward_slash_regex, self.CONSTANTS.dot_regex, self.CONSTANTS.hyphen_regex]
+        self._pattern_list = [
+            self._CONSTANTS.forward_slash_regex, self._CONSTANTS.dot_regex, self._CONSTANTS.hyphen_regex]
     """
     Inherits from DateFromString, tries to parse date from passed string using
     dateutil module / super class' methods.
@@ -82,7 +84,7 @@ class DateParser(DateFromString):
         using dateutil if separator occurrence > 2 in date_string.
         :return: Datetime object
         """
-        for pattern in self.pattern_list:
+        for pattern in self._pattern_list:
             compiled_pattern = re.compile(pattern)
             pattern_date = re.findall(compiled_pattern, date_string)
             try:
@@ -109,7 +111,7 @@ class DateParser(DateFromString):
         except ValueError:
             pass
 
-        for separator in self.separators:
+        for separator in self._separators:
             if date_string.count(separator) > 1:
                 try:
                     date = self._parse_by_separator(date_string)
@@ -124,9 +126,9 @@ class DateParser(DateFromString):
         self._get_month(date_string)
         self._get_day(date_string)
         try:
-            if self.date and len(self.date[2]) > 2:
-                return dateutil.parser.parse(' '.join(self.date))
+            if self._date and len(self._date[2]) > 2:
+                return dateutil.parser.parse(' '.join(self._date))
             else:
-                return datetime(int(self.date[0]), int(self.date[1]), int(self.date[2]))
+                return datetime(int(self._date[0]), int(self._date[1]), int(self._date[2]))
         except IndexError:
             return 'Could not parse date from {}'.format(date_string)
