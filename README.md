@@ -1,5 +1,5 @@
 # Date-parser
-A small and basic date parser for different date formats, parses to datetime eligble format with the kind help of the dateutil library.
+Parse different date strings into datetime objects.
 
 #### Installation
 `pip3 install date-parser`
