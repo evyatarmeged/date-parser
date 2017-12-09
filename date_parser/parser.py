@@ -89,8 +89,6 @@ class DateParser(DateFromString):
                 timestamp = dateutil.parser.parse(pattern_date[0])
                 if timestamp:
                     return timestamp
-                else:
-                    pass
             except (ValueError, IndexError):
                 pass
 
@@ -115,8 +113,6 @@ class DateParser(DateFromString):
                     date = self._parse_by_separator(date_string)
                     if date:
                         return date
-                    else:
-                        continue
                 except ValueError:
                     continue
 
@@ -125,8 +121,11 @@ class DateParser(DateFromString):
         self._get_day(date_string)
         try:
             if self._date and len(self._date[2]) > 2:
-                return dateutil.parser.parse(' '.join(self._date))
+                parsed_date = dateutil.parser.parse(' '.join(self._date))
             else:
-                return datetime(int(self._date[0]), int(self._date[1]), int(self._date[2]))
+                parsed_date = datetime(int(self._date[0]), int(self._date[1]), int(self._date[2]))
         except IndexError:
+            self._date = []
             return 'Could not parse date from {}'.format(date_string)
+        self._date = []
+        return parsed_date

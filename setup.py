@@ -4,7 +4,7 @@ setup(
     name='date_parser',
     packages=['date_parser'],
     license='MIT',
-    version='0.1',
+    version='0.2',
     description='Parse different date strings into YYYY-MM-DD format',
     author='Evyatar Meged',
     author_email='evyatarmeged@gmail.com',
